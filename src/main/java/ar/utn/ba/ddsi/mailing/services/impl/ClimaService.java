@@ -1,6 +1,12 @@
 package ar.utn.ba.ddsi.mailing.services.impl;
 
-import ar.utn.ba.ddsi.mailing.models.entities.Clima;
+import ar.utn.ba.ddsi.mailing.models.entities.Clima.Clima;
+import ar.utn.ba.ddsi.mailing.models.entities.Clima.Temperatura;
+import ar.utn.ba.ddsi.mailing.models.entities.Ubicacion.Ciudad;
+import ar.utn.ba.ddsi.mailing.models.entities.Ubicacion.Pais;
+import ar.utn.ba.ddsi.mailing.models.entities.Ubicacion.Region;
+import ar.utn.ba.ddsi.mailing.models.entities.Ubicacion.Ubicacion;
+import ar.utn.ba.ddsi.mailing.models.entities.Clima.VelocidadViento;
 import ar.utn.ba.ddsi.mailing.models.repositories.IClimaRepository;
 import ar.utn.ba.ddsi.mailing.models.dto.external.weatherapi.WeatherResponse;
 import ar.utn.ba.ddsi.mailing.services.IClimaService;
@@ -63,13 +69,21 @@ public class ClimaService implements IClimaService {
             .bodyToMono(WeatherResponse.class)
             .map(response -> {
                 Clima clima = new Clima();
-                clima.setCiudad(ciudad);
-                clima.setRegion(response.getLocation().getRegion());
-                clima.setPais(response.getLocation().getCountry());
-                clima.setTemperaturaCelsius(response.getCurrent().getTemp_c());
-                clima.setTemperaturaFahrenheit(response.getCurrent().getTemp_f());
+                Ubicacion ubicacion = new Ubicacion();
+                Ciudad ciudadItem = new Ciudad();
+                ciudadItem.setNombre(ciudad);
+                ubicacion.setCiudad(ciudadItem);
+                Region regionItem = new Region();
+                regionItem.setNombre(response.getLocation().getRegion());
+                ubicacion.setRegion(regionItem);
+                Pais paisItem = new Pais();
+                paisItem.setNombre(response.getLocation().getCountry());
+                ubicacion.setPais(paisItem);
+                Temperatura temperatura = new Temperatura(response.getCurrent().getTemp_c());
+                clima.setTemperatura(temperatura);
                 clima.setCondicion(response.getCurrent().getCondition().getText());
-                clima.setVelocidadVientoKmh(response.getCurrent().getWind_kph());
+                VelocidadViento velocidadViento = new VelocidadViento(response.getCurrent().getWind_kph());
+                clima.setVelocidadViento(velocidadViento);
                 clima.setHumedad(response.getCurrent().getHumidity());
                 return clima;
             });

@@ -1,6 +1,6 @@
 package ar.utn.ba.ddsi.mailing.models.repositories.impl;
 
-import ar.utn.ba.ddsi.mailing.models.entities.Clima;
+import ar.utn.ba.ddsi.mailing.models.entities.Clima.Clima;
 import ar.utn.ba.ddsi.mailing.models.repositories.IClimaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.*;

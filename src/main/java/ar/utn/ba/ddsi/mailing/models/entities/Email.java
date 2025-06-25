@@ -11,7 +11,7 @@ public class Email {
     private String remitente;
     private String asunto;
     private String contenido;
-    private boolean enviado;
+    private boolean enviado; // lo podria sacar.
 
     public Email(String destinatario, String remitente, String asunto, String contenido) {
         this.destinatario = destinatario;
